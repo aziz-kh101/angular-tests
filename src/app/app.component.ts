@@ -1,16 +1,17 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { ItemComponent } from './item/item.component';
 import { ServiceService } from './service.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  providers: [ServiceService],
 })
 export class AppComponent {
-  name = '';
+  name = 'hello, nada';
   title = 'angular-revision';
   todos: any[] = [];
   showDiv = true;
@@ -24,6 +25,9 @@ export class AppComponent {
 
   @ViewChild('itemComponent')
   itemComponent!: ItemComponent;
+
+  @ViewChild('nameInput')
+  nameInput!: ElementRef;
 
   students = [
     { name: 'item1', age: 20 },
@@ -48,17 +52,36 @@ export class AppComponent {
     // console.log('Component initialized');
 
     this.form = this.fb.group({
-      name: '',
-      age: 0,
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(10),
+        ],
+      ],
+      age: [0, [Validators.required, Validators.min(18), Validators.max(60)]],
     });
 
     setTimeout(() => {
       this.service.name = 'Service Changed';
     }, 3000);
+
+    setTimeout(() => {
+      this.name = 'goodbyen, nada';
+    }, 3000);
   }
 
   navigate() {
-    this.router.navigate(['/item', 1]);
+    this.router.navigate(['/details', 1]);
+  }
+
+  alertName() {
+    alert(this.nameInput.nativeElement.value);
+  }
+
+  alert() {
+    window.alert('Hello');
   }
 
   // addItem() {
@@ -67,9 +90,16 @@ export class AppComponent {
   // }
 
   submit() {
-    console.log(this.form.controls['age']);
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    console.log(this.form.value);
   }
 
+  submitForm(value: any) {
+    console.log(value);
+  }
   trackedBy(index: number, item: string) {
     return item;
   }
@@ -78,3 +108,12 @@ export class AppComponent {
     this.name = event.target.value;
   }
 }
+
+// function sum(a, b){
+//   return a + b;
+// }
+
+// x = 40;
+// y = 50;
+
+// sum(x, y); // 90

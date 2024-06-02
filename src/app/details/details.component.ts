@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ServiceService } from '../service.service';
 
 @Component({
   selector: 'app-details',
@@ -7,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './details.component.scss',
 })
 export class DetailsComponent {
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private service: ServiceService) {}
 
   id = 0;
   snapshaotId = 0;

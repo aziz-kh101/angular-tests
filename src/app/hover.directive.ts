@@ -10,7 +10,7 @@ import {
   selector: '[appHover]',
 })
 export class HoverDirective {
-  @HostListener('mousenter') onMouseEnter() {
+  @HostListener('mouseenter') onMouseEnter() {
     this.element.nativeElement.style.backgroundColor = 'yellow';
   }
 
@@ -24,7 +24,7 @@ export class HoverDirective {
 
   @Input()
   @HostBinding('style.height')
-  height = '200px';
+  height = '200px'; // default value
 
   @Input()
   @HostBinding('style.width')

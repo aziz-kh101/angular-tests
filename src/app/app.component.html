@@ -13,39 +13,62 @@
 FormGroup
 <!-- 4 types bindins -->
 
-<!-- 1. Interpolation -->
+<!-- 1. Interpolation :: {{ }} -->
 {{ title }}
-<!-- 2. Attribute / Property binding -->
-<input [id]="1" />
-<input placeholder="test" [value]="name" disabled />
-<!-- 3. Event binding -->
-<!-- <button (click)="addItem()">Add</button> -->
-<!-- 4. Two-way binding -->
-<input [(ngModel)]="name" placeholder="name" />
+<div>
+  <strong>test interpolation: </strong>
+  <span>{{ title }}</span>
+</div>
+<!-- 2. Attribute / Property binding :: [ ]-->
+<input [placeholder]="title" [id]="1" />
+<input [value]="name" />
+<!-- 3. Event binding :: () -->
+<button (click)="alert()">alert</button>
+<!-- 4. Two-way binding :: [( )] -->
+<input [(ngModel)]="name" /> {{ name }}
+<!-- equivalent -->
+<!-- <input
+  [value]="name"
+  (input)="name = $any($event.target)?.value || ''"
+  placeholder="name"
+/> -->
 
 <!-- template reference -->
 <h1>Template Ref</h1>
 <app-item-component item="abc" #itemComponent></app-item-component>
 <input #nameInput placeholder="name" [placeholder]="'template ref'" />
-<button (click)="name = nameInput.value">Set Name</button>
+<!-- nameInput point <input #nameInput placeholder="name" [placeholder]="'template ref'" /> -->
+<button (click)="alertName()">Set Name</button>
+
+<form #f="ngForm">
+  <input name="firstName" ngModel placeholder="name" />
+  <input name="lastName" ngModel placeholder="lastName" />
+  <input name="email" ngModel placeholder="email" />
+  <input name="password" ngModel placeholder="password" />
+  <button (click)="submitForm(f.value)">submit</button>
+</form>
+
+<div>
+  <strong>itemComponentRef: </strong>
+  {{ itemComponent.title }}
+</div>
 
 <h1>Directives</h1>
 <div>
   <!-- ngIf -->
-  <div *ngIf="students">Test</div>
+  <div *ngIf="showDiv">Test</div>
 
   <!-- ngIf equivalent -->
-  <ng-template [ngIf]="showDiv">
+  <!-- <ng-template [ngIf]="showDiv">
     <div>Test</div>
-  </ng-template>
+  </ng-template> -->
 
   <button (click)="showDiv = !showDiv">Toggle</button>
 </div>
 
 <!-- directives types (structural, attribute) -->
 
-<div height="400px"></div>
-
+<div appHover height="400px" width="300px"></div>
 <h1>Custom TwoWayBinding</h1>
 
 <input [appCustomNgModel]="custom" (appCustomNgModelChange)="custom = $event" />
@@ -59,7 +82,39 @@ FormGroup
 
 <form [formGroup]="form">
   <input formControlName="name" placeholder="name" />
-  <input formControlName="age" placeholder="age" />
+  <span
+    style="color: red"
+    *ngIf="
+      form.controls['name'].hasError('required') &&
+      form.controls['name'].touched
+    "
+    >name required</span
+  >
+  <input formControlName="age" type="number" placeholder="age" />
+  <span
+    style="color: red"
+    *ngIf="
+      form.controls['age'].hasError('required') && form.controls['name'].touched
+    "
+    >age required</span
+  >
+  <!-- <span
+    style="color: red"
+    *ngIf="
+      form.controls['age'].hasError('required') && form.controls['name'].touched; else minLenth
+    "
+    >age required</span
+  > -->
+  <!-- <ng-template #minLenth>
+    <span
+      style="color: red"
+      *ngIf="
+        form.controls['age'].hasError('minLength') &&
+        form.controls['name'].touched
+      "
+      >age min length 2</span
+    >
+  </ng-template> -->
   <button (click)="submit()">submit</button>
 </form>
 

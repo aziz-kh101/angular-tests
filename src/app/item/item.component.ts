@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   styleUrl: './item.component.scss',
 })
 export class ItemComponent {
-  title = 'Item Component';
+  title = 'Item Component, nada';
 
   item = 'hhhh';
 

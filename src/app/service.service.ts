@@ -1,12 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class ServiceService {
-  constructor() {}
+  public name = 'Service';
 
-  getItemsFromServer() {
-    return ['item1', 'item2', 'item3'];
+  constructor(private http: HttpClient) {
+    // console.log('Service created');
+  }
+
+  getItemsFromServer(): Observable<any[]> {
+    return this.http.get<any[]>('https://jsonplaceholder.typicode.com/todos');
   }
 }

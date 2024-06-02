@@ -3,14 +3,33 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ExecutePipe } from './execute.pipe';
 import { ItemComponent } from './item/item.component';
+import { CommonModule } from '@angular/common';
+import { HoverDirective } from './hover.directive';
+import { CustomNgModelDirective } from './custom-ng-model.directive';
+import { ServiceService } from './service.service';
+import { DetailsComponent } from './details/details.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [AppComponent, ExecutePipe, ItemComponent],
-  imports: [BrowserModule, FormsModule, AppRoutingModule],
-  providers: [],
+  declarations: [
+    AppComponent,
+    ExecutePipe,
+    ItemComponent,
+    HoverDirective,
+    CustomNgModelDirective,
+    DetailsComponent,
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+  ],
+  providers: [ServiceService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

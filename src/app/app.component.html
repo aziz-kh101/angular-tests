@@ -1,16 +1,12 @@
-<h1>{{ title | execute }}</h1>
+<h1>Binding</h1>
+
+<h3>{{ title | execute }}</h3>
 <!-- Statrt -->
 <input [(ngModel)]="name" placeholder="name" />
 <!-- equivalent -->
 <input (input)="handleChange($event)" [value]="name" placeholder="name" />
 <!-- End -->
-<button (click)="addItem()">Add</button>
-
-<ol>
-  <li *ngFor="let item of items; trackBy: trackedBy">
-    {{ item }}
-  </li>
-</ol>
+<!-- <button (click)="addItem()">Add</button> -->
 
 <app-item-component />
 
@@ -23,11 +19,76 @@ FormGroup
 <input [id]="1" />
 <input placeholder="test" [value]="name" disabled />
 <!-- 3. Event binding -->
-<button (click)="addItem()">Add</button>
+<!-- <button (click)="addItem()">Add</button> -->
 <!-- 4. Two-way binding -->
 <input [(ngModel)]="name" placeholder="name" />
 
 <!-- template reference -->
-<app-item-component #itemComponent></app-item-component>
+<h1>Template Ref</h1>
+<app-item-component item="abc" #itemComponent></app-item-component>
 <input #nameInput placeholder="name" [placeholder]="'template ref'" />
 <button (click)="name = nameInput.value">Set Name</button>
+
+<h1>Directives</h1>
+<div>
+  <!-- ngIf -->
+  <div *ngIf="students">Test</div>
+
+  <!-- ngIf equivalent -->
+  <ng-template [ngIf]="showDiv">
+    <div>Test</div>
+  </ng-template>
+
+  <button (click)="showDiv = !showDiv">Toggle</button>
+</div>
+
+<!-- directives types (structural, attribute) -->
+
+<div height="400px"></div>
+
+<h1>Custom TwoWayBinding</h1>
+
+<input [appCustomNgModel]="custom" (appCustomNgModelChange)="custom = $event" />
+<br />
+<!-- equivalent -->
+<input [(appCustomNgModel)]="custom" />
+
+{{ custom }}
+
+<h1>Form Group</h1>
+
+<form [formGroup]="form">
+  <input formControlName="name" placeholder="name" />
+  <input formControlName="age" placeholder="age" />
+  <button (click)="submit()">submit</button>
+</form>
+
+<h1>Service Provider</h1>
+
+<span style="color: red">{{ service.name }}</span>
+
+<h1>NGFOR</h1>
+
+<ol>
+  <li *ngFor="let student of students">{{ student.name }} {{ student.age }}</li>
+</ol>
+
+<h1>Router</h1>
+
+<a [routerLink]="['details', 1]">details id: 1</a>
+<a [routerLink]="['details', 2]">details id: 2</a>
+<a [routerLink]="['details', 3]">details id: 3</a>
+<button (click)="navigate()">details</button>
+
+<router-outlet></router-outlet>
+
+<h1>HTTP</h1>
+
+<ul>
+  <li
+    *ngFor="let todo of todos"
+    [ngClass]="todo.completed ? 'completed' : 'not-completed'"
+  >
+    {{ todo.id }} : {{ todo.title }}
+  </li>
+</ul>

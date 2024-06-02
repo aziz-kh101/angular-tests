@@ -1,6 +1,8 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { ItemComponent } from './item/item.component';
 import { ServiceService } from './service.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,12 @@ import { ServiceService } from './service.service';
 export class AppComponent {
   name = '';
   title = 'angular-revision';
-  items: string[] = [];
+  todos: any[] = [];
+  showDiv = true;
+
+  custom = '';
+
+  form!: FormGroup<any>;
 
   @ViewChild('inputElement')
   inputElement!: ElementRef;
@@ -18,15 +25,49 @@ export class AppComponent {
   @ViewChild('itemComponent')
   itemComponent!: ItemComponent;
 
-  constructor(private service: ServiceService) {}
+  students = [
+    { name: 'item1', age: 20 },
+    { name: 'item2', age: 30 },
+    { name: 'item3', age: 40 },
+  ];
 
-  ngOnInit() {
-    this.items = this.service.getItemsFromServer();
+  // private service = inject(ServiceService); // this second way of injecting service
+
+  constructor(
+    public service: ServiceService,
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    // console.log('Component created');
   }
 
-  addItem() {
-    this.items.push(this.name);
-    this.name = '';
+  ngOnInit() {
+    this.service.getItemsFromServer().subscribe((result) => {
+      this.todos = result;
+    });
+    // console.log('Component initialized');
+
+    this.form = this.fb.group({
+      name: '',
+      age: 0,
+    });
+
+    setTimeout(() => {
+      this.service.name = 'Service Changed';
+    }, 3000);
+  }
+
+  navigate() {
+    this.router.navigate(['/item', 1]);
+  }
+
+  // addItem() {
+  //   this.items.push(this.name);
+  //   this.name = '';
+  // }
+
+  submit() {
+    console.log(this.form.controls['age']);
   }
 
   trackedBy(index: number, item: string) {
